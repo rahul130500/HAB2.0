@@ -10,7 +10,7 @@ app.use("/public", express.static("public"));
 
 //home page
 app.get("/", (req, res) => {
-  res.send("home page");
+  res.render("admin/notice/index");
 });
 
 app.listen(3000, function () {
