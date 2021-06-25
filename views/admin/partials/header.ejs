@@ -14,31 +14,24 @@
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" />
     <style>
         @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
-
         .font-family-karla {
             font-family: karla;
         }
-
         .bg-sidebar {
             background: #3d68ff;
         }
-
         .cta-btn {
             color: #3d68ff;
         }
-
         .upgrade-btn {
             background: #1947ee;
         }
-
         .upgrade-btn:hover {
             background: #0038fd;
         }
-
         .active-nav-link {
             background: #1947ee;
         }
-
         .nav-item:hover {
             background: #1947ee;
         }
@@ -91,12 +84,12 @@
             </div>
             <!-- Dropdown Nav -->
             <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-                    <a href=""
-                        class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                        <i class="fas fa-users-cog mr-3"></i>
-                        Notices
-                    </a>
-            </nav>
-            
-        </header>
-        <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
+                <a href=""
+                class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-users-cog mr-3"></i>
+                Notices
+            </a>
+    </nav>
+    
+</header>
+<div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
