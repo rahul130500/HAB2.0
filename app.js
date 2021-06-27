@@ -1,4 +1,5 @@
 const express = require('express');
+const hmcRoutes = require("./routes/hmc.routes");
 const authRoutes= require('./routes/auth-routes');
 const profileRoutes = require("./routes/profile-routes");
 const app = express();
@@ -9,7 +10,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const NoticeRoutes = require("./routes/notice-routes");
 //const NoticeAdd = require("./routes/noticeadd.routes");
-mongoose.connect(keys.mongodb.dbURI,()=>{
+mongoose.connect(keys.mongodb.dbURI,{ useUnifiedTopology: true },()=>{
     console.log("connnected to mongodb");
 })
 
@@ -18,6 +19,7 @@ app.use(cookieSession({
     keys:[keys.session.cookieKey]
 }));
 
+app.use(hmcRoutes);
 
 app.use(passport.initialize());
 app.use(passport.session());
