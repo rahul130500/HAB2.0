@@ -3,6 +3,7 @@ const flash = require("connect-flash");
 const hmcRoutes = require("./routes/hmc.routes");
 const authRoutes= require('./routes/auth-routes');
 const profileRoutes = require("./routes/profile-routes");
+const adminRoutes = require("./routes/admin.routes");
 const app = express();
 const passportSetup = require('./config/passport-setup');
 const mongoose = require('mongoose');
@@ -10,6 +11,7 @@ const keys = require('./config/keys');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const NoticeRoutes = require("./routes/notice-routes");
+const MessRoutes = require("./routes/mess-routes");
 
 const methodOverride = require("method-override");
 
@@ -32,6 +34,8 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use('/auth',authRoutes);
 app.use('/profile',profileRoutes);
 app.use('/admin/notice',NoticeRoutes);
+app.use('/admin/mess',MessRoutes);
+app.use('/admin',adminRoutes);
 
 
 
