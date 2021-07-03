@@ -124,6 +124,23 @@ exports.getOneNotice = async (req, res) => {
   }
 };
 
+exports.deleteNotice = async (req, res) => {
+  try {
+    const id = req.params.notice_id;
+    const notice = await Notice.findById(id);
+    if (notice.path.indexOf("https://") == -1) {
+      fs.unlinkSync(`uploads/notice_pdf/${notice.path}`);
+      console.log("successfully deleted!");
+    }
+    await Notice.findByIdAndRemove(id);
+    req.flash("success", "Successfully deleted notice");
+    return res.redirect("/admin/notice");
+  } catch (err) {
+    // handle the error
+    console.log(err);
+    return res.redirect("/admin/notice");
+  }
+};
 
 
 const compare = (a, b) => {

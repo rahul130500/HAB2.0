@@ -40,5 +40,12 @@ router.put(
   noticeController.editNotice
 );
 
+router.delete(
+  "/:notice_id",
+  isLoggedIn,
+  isAdmin,
+  noticeController.deleteNotice
+);
+
 
 module.exports = router;
