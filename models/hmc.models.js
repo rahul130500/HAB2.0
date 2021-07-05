@@ -1,36 +1,15 @@
 const mongoose = require("mongoose");
 
 const detailsSchema = new mongoose.Schema({
-    name : {
-        type : String,
-        required:[true]
-    },
-    post : {
-        type : String,
-        required:[true]
-    },
-    image : {
-        type : String,
-        required:[true]
-    },
-    contactNo : {
-        type : Number,
-        required:[true]
-    },
-    emailId : {
-        type : String,
-        required:[true]
-    },
-    roomNo : {
-        type : Number,
-        required:[true]
-    },
-    priorityNo : {
-        type : Number,
-        required:[true]
-    },
+  name: { type: String, required: true },
+  post: { type: String, required: true },
+  image: { type: String, required: true },
+  email: { type: String, required: true },
+  contno: {type: Number,required: true},
+  roomno: {type: Number,required: true},
+  priono: {type: Number,required: true},
+  creation: { type: Date, default: Date.now },
+  
 });
 
-const HMC_details = mongoose.model("HMC_detail",detailsSchema);
-
-module.exports = HMC_details;
+module.exports = mongoose.model("hmcDetail", detailsSchema);

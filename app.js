@@ -15,16 +15,20 @@ const MessRoutes = require("./routes/mess-routes");
 
 const methodOverride = require("method-override");
 
-mongoose.connect(keys.mongodb.dbURI,{ useUnifiedTopology: true },()=>{
-    console.log("connnected to mongodb");
-})
+// mongoose.connect(keys.mongodb.dbURI,{ useUnifiedTopology: true },()=>{
+//     console.log("connnected to mongodb");
+// })
+
+//harsh's mongodb
+mongoose.connect("mongodb+srv://Harsh:harsh1234@cluster0.bkld1.mongodb.net/habhmc?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true});
+
 
 app.use(cookieSession({
     maxAgr:24*60*60*1000,
     keys:[keys.session.cookieKey]
 }));
 app.use(flash());
-app.use(hmcRoutes);
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -35,6 +39,7 @@ app.use('/auth',authRoutes);
 app.use('/profile',profileRoutes);
 app.use('/admin/notice',NoticeRoutes);
 app.use('/admin/mess',MessRoutes);
+app.use('/admin/hmc',hmcRoutes);
 app.use('/admin',adminRoutes);
 
 
