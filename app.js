@@ -1,6 +1,7 @@
 const express = require('express');
 const flash = require("connect-flash");
 const hmcRoutes = require("./routes/hmc.routes");
+const announcementsRoutes = require("./routes/announcements.routes");
 const authRoutes= require('./routes/auth-routes');
 const profileRoutes = require("./routes/profile-routes");
 const adminRoutes = require("./routes/admin.routes");
@@ -20,7 +21,7 @@ const methodOverride = require("method-override");
 // })
 
 //harsh's mongodb
-mongoose.connect("mongodb+srv://Harsh:harsh1234@cluster0.bkld1.mongodb.net/habhmc?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://Harsh:harsh1234@cluster0.bkld1.mongodb.net/habhmc?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true, useFindAndModify: false});
 
 
 app.use(cookieSession({
@@ -33,6 +34,8 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.urlencoded({extended:true}))
+
 app.set('view engine','ejs');
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use('/auth',authRoutes);
@@ -40,6 +43,7 @@ app.use('/profile',profileRoutes);
 app.use('/admin/notice',NoticeRoutes);
 app.use('/admin/mess',MessRoutes);
 app.use('/admin/hmc',hmcRoutes);
+app.use('/admin/announcements',announcementsRoutes);
 app.use('/admin',adminRoutes);
 
 
