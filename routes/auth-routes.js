@@ -13,11 +13,11 @@ router.get('/logout', (req, res) => {
 });
 
 
-router.get('/windowslive', passport.authenticate('windowslive', {
+router.get('/azureadoauth2', passport.authenticate('azure_ad_oauth2', {
     scope: ['wl.signin']
 }));
 
-router.get('/windowslive/callback', passport.authenticate('windowslive'), (req, res) => {
+router.get('/azureadoauth2/callback', passport.authenticate('azure_ad_oauth2'), (req, res) => {
    
     res.redirect('/profile');
 });

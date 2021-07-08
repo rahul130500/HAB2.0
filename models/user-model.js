@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    username: String,
     outlookId: String,
+    username: String,
+    email: String,
     isAdmin: { type: Boolean, default: false },
    // email:{ type: String, required: true },
     //accessToken: { type: String, required: true,select: false }

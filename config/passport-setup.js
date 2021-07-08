@@ -1,8 +1,11 @@
 const passport = require('passport');
-const GoogleStrategy = require('passport-windowslive').Strategy;
-const keys = require('./keys');
+const AzureStrategy = require('passport-azure-ad-oauth2').Strategy;
+
 const User = require('../models/user-model');
 const { isLoggedIn, isAdmin } = require("../middlewares/adminauth");
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+const { OUTLOOK_CLIENT_ID, OUTLOOK_CLIENT_SECRET} = process.env;
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -15,26 +18,41 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use(
-    new GoogleStrategy({
+  new AzureStrategy(
+    {
+      clientID: OUTLOOK_CLIENT_ID,
+      clientSecret: OUTLOOK_CLIENT_SECRET,
+      callbackURL: `/auth/azureadoauth2/callback`,
+      
+    },
+    async (accessToken, refresh_token, params, profile, done) => {
+      try {
+        var waadProfile = jwt.decode(params.id_token);
+        //console.log(waadProfile);
+
+        const user = await User.findOne({ email: waadProfile.upn });
+        if (user) return done(null, user);
+
+        const newUser = new User({
+          outlookId: waadProfile.oid,
+          username: waadProfile.name,
+          email: waadProfile.upn,
+          
+          // isverified: true,
+        });
+        if (refresh_token) newUser.refreshToken = refresh_token;
+
+        const users = await User.find({});
+        if (users.length == 0) {
+          newUser.isAdmin = true;
+        }
         
-        clientID: keys.outlook.clientID,
-        clientSecret: keys.outlook.clientSecret,
-        callbackURL: '/auth/windowslive/callback'
-    }, (accessToken, refreshToken, profile, done) => {
-       
-        User.findOne({outlookId: profile.id}).then((currentUser) => {
-            if(currentUser.isAdmin){
-                // already have this user
-                console.log('user is Admin: ', currentUser);
-                done(null, currentUser);
-            } 
-        });
-        new User({
-            outlookId: profile.id,
-            username: profile.displayName
-        }).save().then((newUser) => {
-            console.log('created new user not authenticated: ', newUser);
-            done(null, newUser);
-        });
-    })
+
+        await newUser.save();
+        return done(null, newUser);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  )
 );
