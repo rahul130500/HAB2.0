@@ -50,8 +50,8 @@
                                 <td class="text-left py-3 px-4"><a class="hover:text-blue-500"
                                         href="/admin/notice/<%=notice.id%>">Edit</a></td>
                                 
-                                <td class="text-left py-3 px-4"><a class="hover:text-blue-500"
-                                            href="#">Delete</a></td>
+                                <td class="text-left py-3 px-4"><form class="mx-2" action="/admin/notice/<%=notice.id%>?_method=DELETE"
+                                    method="POST"><button class="hover:text-red-500">Delete</button></form></td>
 
                         </tr>
                         <% })%>
