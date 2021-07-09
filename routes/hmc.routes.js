@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const hmcDetail = require("../models/hmc.models");
+const { isAdmin, isLoggedIn } = require("../middlewares/adminauth");
 const multer = require('multer');
 const fs = require('fs');
 
 //image upload 
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: function(req,file,cb){
         cb(null,'./uploads/details_img');
     },
@@ -13,12 +14,18 @@ var storage = multer.diskStorage({
         cb(null,file.fieldname+"_"+Date.now()+"_"+file.originalname);
     },
 });
-var upload = multer({
+const upload = multer({
     storage: storage,
 }).single("image");
 
-//Insert an user to database
-router.post('/add',upload,(req,res)=>{
+//Importing the controller
+const hmcController = require("../controllers/hmc.controllers");
+
+//Get details from database
+router.get("/", isLoggedIn,isAdmin, hmcController.getDetails);
+
+//Add user to database
+router.post('/add',isLoggedIn,isAdmin,upload,(req,res)=>{
     const detail = new hmcDetail({
         name: req.body.name,
         post: req.body.post,
@@ -42,43 +49,15 @@ router.post('/add',upload,(req,res)=>{
         
 });
 
-router.get("/",(req,res)=>{
-    // res.render("../views/admin/hmc/index");
-    hmcDetail.find().exec((err,hmcdetails)=>{
-        if(err){
-            res.json({message: err.message});
-        }else{
-            res.render("../views/admin/hmc/index",{
-                hmcdetails: hmcdetails,
-            })
-        }
-    })
-})
-
-router.get("/add",(req,res)=>{
+router.get("/add",isLoggedIn,isAdmin,(req,res)=>{
     res.render("../views/admin/hmc/add");
 })
 
+//Get details for editing
+router.get("/:id", isLoggedIn,isAdmin, hmcController.getEditDetails);
 
-router.get('/:id', (req,res) =>{
-    const id = req.params.id;
-    hmcDetail.findById(id ,(err,detail)=>{
-        if(err){
-            res.redirect('/');
-        }else{
-            if(detail == null){
-                res.redirect('/');
-            }
-            else{
-                res.render('../views/admin/hmc/edit',{
-                    detail: detail,
-                })
-            }
-        }
-    })
-});
-
-router.post('/:id',upload,(req,res) =>{
+//Editing the user
+router.post('/:id',isLoggedIn,isAdmin,upload,(req,res) =>{
     const id = req.params.id;
     let new_image = '';
 
@@ -109,31 +88,7 @@ router.post('/:id',upload,(req,res) =>{
     })
 
 })
-
-
-router.get('/delete/:id',(req,res)=>{
-    const id = req.params.id;
-    hmcDetail.findByIdAndRemove(id, (err,result)=>{
-        if(result.image != ''){
-            try{
-                fs.unlinkSync('./uploads/details_img/'+result.image);
-            }catch(err){
-                console.log(err);
-            }
-        }
-        if(err){
-            res.json({message: err.message});
-        }else{
-            res.redirect('/admin/hmc');
-        }
-
-    })
-})
-
-
-
-
-
-
+//Delete entry from database
+router.get("/delete/:id",isLoggedIn,isAdmin,hmcController.deleteDetails);
 
 module.exports = router;
