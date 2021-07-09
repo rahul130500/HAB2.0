@@ -36,8 +36,8 @@
                             <td class="text-left py-3 px-4"><a class="hover:text-blue-500"
                                     href="/admin/announcements/<%= row._id %> ">Edit</a></td>
 
-                            <td class="text-left py-3 px-4"><a class="hover:text-blue-500"
-                                    href="announcements/delete/<%= row._id %> ">Delete</a></td>
+                            <td class="text-left py-3 px-4"><form
+                                    action="announcements/<%= row._id %>?_method=DELETE" method="POST"><button class="hover:text-blue-500">Delete</button></form></td>
 
                         </tr>
                         <% }) %>

@@ -1,6 +1,6 @@
 const Announcement = require("../models/announcements.models");
 
-module.exports.get_announcements = async (req, res) => {
+module.exports.getAnnouncements = async (req, res) => {
     try {
         const announcementsList = await Announcement.find();
         return res.render("../views/admin/announcements/index", { announcementsList });
@@ -10,7 +10,7 @@ module.exports.get_announcements = async (req, res) => {
     }
 };
 
-module.exports.post_addAnnouncement = async (req, res) => {
+module.exports.addAnnouncements = async (req, res) => {
 	try {
 		await Announcement.create(req.body);
 		return res.redirect("/admin/announcements");
@@ -20,7 +20,7 @@ module.exports.post_addAnnouncement = async (req, res) => {
 	}
 };
 
-module.exports.get_editAnnouncements = async (req, res) => {
+module.exports.editAnnouncements = async (req, res) => {
     try {
         const id = req.params.id;
 		const announcement = await Announcement.findById(id);
@@ -31,7 +31,7 @@ module.exports.get_editAnnouncements = async (req, res) => {
 	}
 };
 
-module.exports.post_editAnnouncements = async (req, res) => {
+module.exports.putAnnouncements = async (req, res) => {
     try {
         const id = req.params.id;
 		await Announcement.findByIdAndUpdate(id, req.body);
@@ -42,7 +42,7 @@ module.exports.post_editAnnouncements = async (req, res) => {
 	}
 };
 
-module.exports.get_deleteAnnouncements = async (req, res) => {
+module.exports.deleteAnnouncements = async (req, res) => {
     try {
         const id = req.params.id;
         await Announcement.findByIdAndRemove(id);
