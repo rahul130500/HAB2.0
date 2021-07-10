@@ -2,6 +2,7 @@ const express = require("express");
 const flash = require("connect-flash");
 const hmcRoutes = require("./routes/hmc.routes");
 const announcementsRoutes = require("./routes/announcements.routes");
+const aboutRoutes = require("./routes/about.routes");
 const authRoutes = require("./routes/auth-routes");
 const profileRoutes = require("./routes/profile-routes");
 const adminRoutes = require("./routes/admin.routes");
@@ -56,6 +57,7 @@ app.use("/admin/notice", NoticeRoutes);
 app.use("/admin/mess", MessRoutes);
 app.use("/admin/hmc", hmcRoutes);
 app.use("/admin/announcements", announcementsRoutes);
+app.use('/admin/about',aboutRoutes);
 app.use("/admin", adminRoutes);
 
 app.get("/", (req, res) => {
