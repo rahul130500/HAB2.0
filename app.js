@@ -14,27 +14,28 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 const NoticeRoutes = require("./routes/notice-routes");
 const MessRoutes = require("./routes/mess-routes");
+const Personalweb = require("./routes/personalweb-routes");
 
 const methodOverride = require("method-override");
 require("dotenv").config();
 const { MONGO_URL } = process.env;
 
 //const NoticeAdd = require("./routes/noticeadd.routes");
-mongoose
-  .connect(MONGO_URL, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log("Successful DB connection"))
-  .catch((err) => console.error("DB connection fail"));
+// mongoose
+//   .connect(MONGO_URL, {
+//     useUnifiedTopology: true,
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useFindAndModify: false,
+//   })
+//   .then(() => console.log("Successful DB connection"))
+//   .catch((err) => console.error("DB connection fail"));
 // mongoose.connect(keys.mongodb.dbURI,{ useUnifiedTopology: true },()=>{
 //     console.log("connnected to mongodb");
 // })
 
 //harsh's mongodb
-//mongoose.connect("mongodb+srv://Harsh:harsh1234@cluster0.bkld1.mongodb.net/habhmc?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true, useFindAndModify: false});
+mongoose.connect("mongodb+srv://Harsh:harsh1234@cluster0.bkld1.mongodb.net/habhmc?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true, useFindAndModify: false});
 
 app.use(
   cookieSession({
@@ -59,6 +60,7 @@ app.use("/admin/hmc", hmcRoutes);
 app.use("/admin/announcements", announcementsRoutes);
 app.use('/admin/about',aboutRoutes);
 app.use("/admin", adminRoutes);
+app.use("/admin/personalweb",Personalweb);
 
 app.get("/", (req, res) => {
   res.render("home", { user: req.user });
