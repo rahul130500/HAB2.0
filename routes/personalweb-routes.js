@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const personalweb = require("../models/personalweb.models");
+const { isAdmin, isLoggedIn } = require("../middlewares/adminauth");
 const fs = require('fs');
 const multer = require('multer');
 
@@ -20,32 +21,30 @@ const personalwebController = require("../controllers/personalweb.controllers");
 
 
 
-router.get("/add",(req,res)=>{
+router.get("/add",isLoggedIn,isAdmin,(req,res)=>{
     res.render("../views/admin/personalweb/add");
 });
 
-router.get("/",personalwebController.getWeb);
+router.get("/",isLoggedIn,isAdmin,personalwebController.getWeb);
 
 
+router.get("/:id",isLoggedIn,isAdmin,personalwebController.getEditWeb);
 
-router.post('/add',upload,(req,res)=>{
-    const web = new personalweb({
+router.post('/:id',upload,isLoggedIn,isAdmin,(req,res) =>{
+    const id = req.params.id;
+    
+    personalweb.findByIdAndUpdate(id, {
         name: req.body.name,
-        link: req.body.link
-
-
-    });
-    web.save((err)=>{
+        link: req.body.link,
+    },(err,result)=>{
         if(err){
-            res.json({message: err.message, type: 'danger'})
+            res.json({message: err.message});
         }else{
-            res.redirect("/admin/personalweb");
+            res.redirect('/admin/personalweb');
         }
     })
 
-    
-        
-});
+})
 
 
 

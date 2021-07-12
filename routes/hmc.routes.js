@@ -22,10 +22,10 @@ const upload = multer({
 const hmcController = require("../controllers/hmc.controllers");
 
 //Get details from database
-router.get("/", isLoggedIn, hmcController.getDetails);
+router.get("/", isLoggedIn,isAdmin, hmcController.getDetails);
 
 //Add user to database
-router.post('/add',isLoggedIn,upload,(req,res)=>{
+router.post('/add',isLoggedIn,isAdmin,upload,(req,res)=>{
     const detail = new hmcDetail({
         name: req.body.name,
         post: req.body.post,
@@ -49,15 +49,15 @@ router.post('/add',isLoggedIn,upload,(req,res)=>{
         
 });
 
-router.get("/add",isLoggedIn,(req,res)=>{
+router.get("/add",isLoggedIn,isAdmin,(req,res)=>{
     res.render("../views/admin/hmc/add");
 })
 
 //Get details for editing
-router.get("/:id", isLoggedIn, hmcController.getEditDetails);
+router.get("/:id", isLoggedIn,isAdmin, hmcController.getEditDetails);
 
 //Editing the user
-router.post('/:id',isLoggedIn,upload,(req,res) =>{
+router.post('/:id',isLoggedIn,isAdmin,upload,(req,res) =>{
     const id = req.params.id;
     let new_image = '';
 
@@ -89,6 +89,6 @@ router.post('/:id',isLoggedIn,upload,(req,res) =>{
 
 })
 //Delete entry from database
-router.get("/delete/:id",isLoggedIn,hmcController.deleteDetails);
+router.get("/delete/:id",isLoggedIn,isAdmin,hmcController.deleteDetails);
 
 module.exports = router;

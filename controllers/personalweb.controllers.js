@@ -15,4 +15,23 @@ exports.getWeb = async (req,res)=>{
     })
 };
 
+exports.getEditWeb = async (req,res) =>{
+    const id = req.params.id;
+    personalweb.findById(id ,(err,detail)=>{
+        if(err){
+            res.redirect('/');
+        }else{
+            if(detail == null){
+                res.redirect('/');
+            }
+            else{
+                res.render('../views/admin/personalweb/add',{
+                    detail: detail,
+                })
+            }
+        }
+    })
+};
+
+
 
