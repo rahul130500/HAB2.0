@@ -2,7 +2,7 @@ const About = require("../models/about.models");
 
 module.exports.getAboutDetails = async (req, res) => {
     try {
-        const aboutdetails = await About.find();
+        const aboutdetails = await About.find({}).sort({_id:-1}).limit(1);
         return res.render("../views/admin/about/index", { aboutdetails });
     } catch (err) {
         console.error(err);

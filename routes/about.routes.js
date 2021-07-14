@@ -1,17 +1,18 @@
 const express = require("express");
 const controllers = require("../controllers/about.controllers");
+const { isAdmin, isLoggedIn } = require("../middlewares/adminauth");
 
 const router = express.Router();
 
-router.get("/add", (req, res) => {
+router.get("/add", isLoggedIn,isAdmin, (req, res) => {
 	res.render("../views/admin/about/add");
 });
-router.post("/add", controllers.addAboutDetails);
+router.post("/add", isLoggedIn,isAdmin, controllers.addAboutDetails);
 
-router.get("/", controllers.getAboutDetails);
+router.get("/", isLoggedIn,isAdmin, controllers.getAboutDetails);
 
-router.get("/:id", controllers.editAboutDetails);
-router.put("/:id", controllers.putAboutDetails);
+router.get("/:id", isLoggedIn,isAdmin, controllers.editAboutDetails);
+router.put("/:id", isLoggedIn,isAdmin, controllers.putAboutDetails);
 
 
 
